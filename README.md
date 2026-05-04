@@ -20,7 +20,7 @@ warps, spawn, painel admin e update checker integrado.
 O JAR fica em:
 
 ```text
-build/libs/PolarUtilities-0.4.0.jar
+build/libs/PolarUtilities-0.4.1.jar
 ```
 
 ## Publicar no GitHub
@@ -42,11 +42,8 @@ git remote add origin https://github.com/SEU_USUARIO/PolarUtilities.git
 git push -u origin main
 ```
 
-Depois que o repositorio existir, configure a URL de updates no servidor:
-
-```text
-/polarutilities settings set update-checker.url https://raw.githubusercontent.com/SEU_USUARIO/PolarUtilities/main/release/update.json
-```
+O update checker oficial ja vem apontando para este repositorio. Admins podem
+desligar pela GUI ou por comando se quiserem.
 
 ## Estrutura
 
@@ -84,9 +81,21 @@ de texto tambem podem ser alterados por comando:
 
 ## Update Checker
 
-O plugin checa atualizacoes em segundo plano quando o servidor liga. Para
-funcionar para voce e para outros servidores, publique um arquivo `update.json`
-em uma URL publica e configure essa URL no plugin.
+O plugin checa atualizacoes em segundo plano quando o servidor liga. A versao
+oficial ja vem pre-configurada para ler:
+
+```text
+https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json
+```
+
+Para desligar, o admin pode usar a GUI `/polarutilities settings` ou o comando:
+
+```text
+/polarutilities settings set update-checker.enabled false
+```
+
+Se alguem fizer um fork, ai sim pode trocar `update-checker.url` para apontar
+para outro `update.json`.
 
 Template pronto:
 
@@ -98,18 +107,12 @@ Exemplo:
 
 ```json
 {
-  "latest": "0.3.0",
-  "downloadUrl": "https://github.com/seuusuario/PolarUtilities/releases/latest",
-  "changelogUrl": "https://github.com/seuusuario/PolarUtilities/blob/main/CHANGELOG.md",
-  "message": "Update checker integrado e melhorias de configuracao.",
+  "latest": "0.4.1",
+  "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
+  "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
+  "message": "Resumo curto da versao mais recente.",
   "critical": false
 }
-```
-
-Configure no servidor:
-
-```text
-/polarutilities settings set update-checker.url https://raw.githubusercontent.com/SEU_USUARIO/PolarUtilities/main/release/update.json
 ```
 
 Antes de distribuir uma nova versao, atualize o `latest`, os links e a mensagem

@@ -16,6 +16,7 @@ import java.util.List;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PolarUtilitiesPlugin extends JavaPlugin {
+    private static final String DEFAULT_UPDATE_URL = "https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json";
     private final List<PluginFeature> features = new ArrayList<>();
     private PluginStorage storage;
     private TeleportService teleportService;
@@ -24,6 +25,7 @@ public final class PolarUtilitiesPlugin extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
+        ensureDefaultUpdateUrl();
         saveConfig();
         storage = new PluginStorage(this);
         storage.load();
@@ -69,5 +71,12 @@ public final class PolarUtilitiesPlugin extends JavaPlugin {
 
     public TeleportService teleportService() {
         return teleportService;
+    }
+
+    private void ensureDefaultUpdateUrl() {
+        String updateUrl = getConfig().getString("update-checker.url", "");
+        if (updateUrl == null || updateUrl.isBlank()) {
+            getConfig().set("update-checker.url", DEFAULT_UPDATE_URL);
+        }
     }
 }

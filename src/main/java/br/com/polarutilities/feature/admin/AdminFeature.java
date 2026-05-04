@@ -29,6 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class AdminFeature implements PluginFeature, Listener {
+    private static final String DEFAULT_UPDATE_URL = "https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json";
     private static final List<String> ROOT_COMMANDS = List.of(
         "help",
         "version",
@@ -71,7 +72,7 @@ public final class AdminFeature implements PluginFeature, Listener {
             SettingOption.text("warps.list-title", Material.COMPASS, "Titulo da lista de warps", "Texto exibido antes da lista de warps.", "Warps disponiveis"),
             SettingOption.bool("spawn.fallback-to-world-spawn", "Spawn fallback", "Usa o spawn do mundo se /setspawn ainda nao foi usado.", true),
             SettingOption.bool("update-checker.enabled", "Update checker", "Checa se existe versao nova ao ligar o servidor.", true),
-            SettingOption.text("update-checker.url", Material.MAP, "URL de updates", "Endereco publico do update.json.", ""),
+            SettingOption.text("update-checker.url", Material.MAP, "URL de updates", "Endereco publico do update.json.", DEFAULT_UPDATE_URL),
             SettingOption.bool("update-checker.notify-console", "Avisar console", "Mostra updates no console do servidor.", true),
             SettingOption.bool("update-checker.notify-admins-on-join", "Avisar admins", "Avisa admins quando entrarem se houver update.", true),
             SettingOption.integer("update-checker.startup-delay-seconds", Material.REPEATER, "Delay do update checker", "Tempo apos o boot antes da checagem.", 5, 0, 120, 1, 10),

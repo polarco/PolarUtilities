@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 - 2026-05-04
+
+- Corrigido o update checker para vir pre-configurado com a URL oficial do GitHub.
+- Adicionado preenchimento automatico da URL oficial quando `update-checker.url` estiver vazio.
+- Documentado que o opt-out correto e desligar `update-checker.enabled`.
+
 ## 0.4.0 - 2026-05-04
 
 - Preparado o projeto para publicacao no GitHub.

@@ -22,14 +22,18 @@ No `release/update.json`, mantenha este formato:
 ```json
 {
   "latest": "0.5.0",
-  "downloadUrl": "https://github.com/SEU_USUARIO/PolarUtilities/releases/latest",
-  "changelogUrl": "https://github.com/SEU_USUARIO/PolarUtilities/blob/main/CHANGELOG.md",
+  "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
+  "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
   "message": "Resumo curto e claro da nova versao.",
   "critical": false
 }
 ```
 
 Use `"critical": true` so quando a atualizacao for muito importante.
+
+O plugin oficial ja vem com `update-checker.url` apontando para o arquivo raw
+do GitHub. Admins fazem opt-out desligando `update-checker.enabled`, nao
+apagando a URL.
 
 ## 3. Testar localmente
 

@@ -61,27 +61,36 @@ No GitHub, confirme se aparecem estes arquivos:
 
 Nao precisa subir a pasta `build/`. Ela fica fora pelo `.gitignore`.
 
-## 4. Configurar o update checker
+## 4. Conferir o update checker
 
-Abra o arquivo `release/update.json` no GitHub e troque `SEU_USUARIO` pelo seu
-usuario real nos links.
-
-Depois, dentro do servidor Minecraft, rode:
+O update checker oficial ja vem pre-configurado para:
 
 ```text
-/polarutilities settings set update-checker.url https://raw.githubusercontent.com/SEU_USUARIO/PolarUtilities/main/release/update.json
+https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json
 ```
 
-Pronto. Quando voce atualizar o `release/update.json`, servidores usando o
-plugin vao conseguir enxergar a versao nova.
+Para conferir no servidor Minecraft:
+
+```text
+/polarutilities settings get update-checker.url
+```
+
+Se quiser desligar os avisos de update:
+
+```text
+/polarutilities settings set update-checker.enabled false
+```
+
+So troque `update-checker.url` se voce fizer um fork ou quiser apontar para
+outro arquivo `update.json`.
 
 ## 5. Criar a primeira release
 
 Depois do primeiro push, rode:
 
 ```bash
-git tag v0.4.0
-git push origin v0.4.0
+git tag v0.4.1
+git push origin v0.4.1
 ```
 
 O GitHub Actions vai compilar o plugin e criar uma Release com o JAR
