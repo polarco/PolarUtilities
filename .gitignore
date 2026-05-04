@@ -1,0 +1,8 @@
+.gradle/
+build/
+run/
+*.log
+*.tmp
+players.yml
+warps.yml
+spawn.yml

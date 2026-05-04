@@ -1,0 +1,25 @@
+teleport:
+  delay-seconds: 3
+  cancel-on-move: true
+
+tpa:
+  request-timeout-seconds: 60
+  allow-self-request: false
+
+homes:
+  default-limit: 5
+  gui-title: "Suas homes"
+
+warps:
+  list-title: "Warps disponiveis"
+
+spawn:
+  fallback-to-world-spawn: true
+
+update-checker:
+  enabled: true
+  url: ""
+  notify-console: true
+  notify-admins-on-join: true
+  startup-delay-seconds: 5
+  timeout-seconds: 6

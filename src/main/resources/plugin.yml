@@ -1,0 +1,115 @@
+name: PolarUtilities
+version: ${version}
+main: br.com.polarutilities.PolarUtilitiesPlugin
+api-version: '26.1'
+author: Polarco
+description: Utilidades modulares para servidores Paper 26.1.2.
+
+commands:
+  polarutilities:
+    description: Comando administrativo do PolarUtilities.
+    usage: /polarutilities <help|version|reload|debug|updates|settings>
+    aliases: [putils]
+    permission: polarutilities.admin
+  tpa:
+    description: Solicita teleporte ate outro jogador.
+    usage: /tpa <jogador>
+    permission: polarutilities.tpa.use
+  tpahere:
+    description: Solicita que outro jogador venha ate voce.
+    usage: /tpahere <jogador>
+    permission: polarutilities.tpa.use
+  tpaccept:
+    description: Aceita um pedido de teleporte.
+    usage: /tpaccept [jogador]
+    aliases: [tpyes]
+    permission: polarutilities.tpa.use
+  tpdeny:
+    description: Recusa um pedido de teleporte.
+    usage: /tpdeny [jogador]
+    aliases: [tpno]
+    permission: polarutilities.tpa.use
+  tpacancel:
+    description: Cancela pedidos de teleporte enviados.
+    usage: /tpacancel [jogador]
+    permission: polarutilities.tpa.use
+  tptoggle:
+    description: Ativa ou desativa recebimento de TPA.
+    usage: /tptoggle
+    permission: polarutilities.tpa.use
+  sethome:
+    description: Salva uma home.
+    usage: /sethome [nome]
+    permission: polarutilities.home.set
+  home:
+    description: Teleporta para uma home.
+    usage: /home [nome]
+    permission: polarutilities.home.use
+  homes:
+    description: Lista ou abre a GUI de homes.
+    usage: /homes [gui|list]
+    permission: polarutilities.home.use
+  delhome:
+    description: Remove uma home.
+    usage: /delhome <nome>
+    permission: polarutilities.home.set
+  setwarp:
+    description: Cria ou atualiza um warp.
+    usage: /setwarp <nome>
+    permission: polarutilities.warp.admin
+  delwarp:
+    description: Remove um warp.
+    usage: /delwarp <nome>
+    permission: polarutilities.warp.admin
+  warp:
+    description: Teleporta para um warp.
+    usage: /warp <nome>
+    permission: polarutilities.warp.use
+  warps:
+    description: Lista warps clicaveis.
+    usage: /warps
+    permission: polarutilities.warp.use
+  setspawn:
+    description: Define o spawn principal.
+    usage: /setspawn
+    permission: polarutilities.spawn.set
+  spawn:
+    description: Teleporta para o spawn.
+    usage: /spawn
+    permission: polarutilities.spawn.use
+
+permissions:
+  polarutilities.admin:
+    description: Acesso administrativo completo do plugin.
+    default: op
+    children:
+      polarutilities.warp.admin: true
+      polarutilities.spawn.set: true
+      polarutilities.home.bypass-limit: true
+  polarutilities.tpa.use:
+    description: Permite usar comandos de TPA.
+    default: true
+  polarutilities.home.use:
+    description: Permite usar homes.
+    default: true
+  polarutilities.home.set:
+    description: Permite criar e remover homes.
+    default: true
+  polarutilities.home.gui:
+    description: Permite abrir a GUI de homes.
+    default: true
+  polarutilities.home.bypass-limit:
+    description: Ignora o limite de homes.
+    default: op
+  polarutilities.warp.use:
+    description: Permite usar warps existentes.
+    default: true
+  polarutilities.warp.admin:
+    description: Permite criar e remover warps.
+    default: op
+  polarutilities.spawn.use:
+    description: Permite usar /spawn.
+    default: true
+  polarutilities.spawn.set:
+    description: Permite usar /setspawn.
+    default: op
