@@ -25,7 +25,7 @@ Update these files before committing:
 
 ```json
 {
-  "latest": "0.4.2",
+  "latest": "0.4.3",
   "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
   "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
   "message": "Short release summary.",
@@ -53,15 +53,15 @@ build/libs/
 ```bash
 git status
 git add .
-git commit -m "Release 0.4.2"
+git commit -m "Release 0.4.3"
 git push origin main
 ```
 
 ## 5. Create The Release
 
 ```bash
-git tag v0.4.2
-git push origin v0.4.2
+git tag v0.4.3
+git push origin v0.4.3
 ```
 
 GitHub Actions will build the plugin and create the release automatically.

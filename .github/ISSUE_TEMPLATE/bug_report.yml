@@ -7,7 +7,7 @@ body:
     id: plugin-version
     attributes:
       label: PolarUtilities version
-      placeholder: "0.4.2"
+      placeholder: "0.4.3"
     validations:
       required: true
   - type: input

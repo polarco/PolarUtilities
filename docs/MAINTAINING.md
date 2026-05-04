@@ -32,15 +32,15 @@ Use this when server owners should receive the update through the update checker
 
 ```bash
 git add .
-git commit -m "Release 0.4.2"
+git commit -m "Release 0.4.3"
 git push origin main
 ```
 
 6. Tag the release:
 
 ```bash
-git tag v0.4.2
-git push origin v0.4.2
+git tag v0.4.3
+git push origin v0.4.3
 ```
 
 After the tag is pushed, GitHub Actions publishes the JAR automatically.

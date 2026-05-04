@@ -45,7 +45,7 @@ Update release documentation
 Release tags use this format:
 
 ```text
-v0.4.2
+v0.4.3
 ```
 
 Pushing a tag starts the GitHub Actions release workflow and attaches the built

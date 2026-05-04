@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.3 - 2026-05-04
+
+- Atualizados workflows do GitHub Actions para versoes modernas das actions oficiais.
+- Removido aviso de depreciacao de Node 20 nos builds e releases automaticos.
+- Atualizadas referencias publicas para a versao atual.
+
 ## 0.4.2 - 2026-05-04
 
 - Polido o README e a documentacao publica do repositorio.

@@ -101,7 +101,7 @@ a new version is published, `latest`, `downloadUrl`, `changelogUrl` and
 The plugin JAR is generated at:
 
 ```text
-build/libs/PolarUtilities-0.4.2.jar
+build/libs/PolarUtilities-0.4.3.jar
 ```
 
 ## Project Structure

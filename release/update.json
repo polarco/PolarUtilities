@@ -1,7 +1,7 @@
 {
-  "latest": "0.4.2",
+  "latest": "0.4.3",
   "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
   "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
-  "message": "Repositorio publico polido com documentacao e fluxo de release mais profissional.",
+  "message": "Workflows do GitHub Actions atualizados para actions modernas sem aviso de Node 20.",
   "critical": false
 }
