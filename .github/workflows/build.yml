@@ -27,8 +27,13 @@ jobs:
       - name: Build
         run: ./gradlew clean build --warning-mode all
 
-      - name: Upload JAR
+      - name: Prepare artifact
+        run: |
+          mkdir -p dist
+          cp "build/libs/PolarUtilities-$(cat VERSION).jar" dist/
+
+      - name: Upload plugin JAR
         uses: actions/upload-artifact@v4
         with:
           name: PolarUtilities
-          path: build/libs/PolarUtilities-*.jar
+          path: dist/*.jar

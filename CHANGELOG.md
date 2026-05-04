@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.2 - 2026-05-04
+
+- Polido o README e a documentacao publica do repositorio.
+- Adicionados templates profissionais para issues, pull requests, suporte e seguranca.
+- Ajustado o workflow de release para anexar apenas o JAR principal.
+- Atualizados metadados de release para a versao publica atual.
+
 ## 0.4.1 - 2026-05-04
 
 - Corrigido o update checker para vir pre-configurado com a URL oficial do GitHub.

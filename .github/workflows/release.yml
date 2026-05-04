@@ -29,11 +29,16 @@ jobs:
       - name: Build
         run: ./gradlew clean build --warning-mode all
 
+      - name: Prepare release artifact
+        run: |
+          mkdir -p dist
+          cp "build/libs/PolarUtilities-$(cat VERSION).jar" dist/
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" \
-            build/libs/PolarUtilities-*.jar \
+            dist/*.jar \
             --title "PolarUtilities $GITHUB_REF_NAME" \
             --generate-notes

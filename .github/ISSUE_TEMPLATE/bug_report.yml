@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a reproducible problem in PolarUtilities.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: input
+    id: plugin-version
+    attributes:
+      label: PolarUtilities version
+      placeholder: "0.4.2"
+    validations:
+      required: true
+  - type: input
+    id: paper-version
+    attributes:
+      label: Paper version
+      placeholder: "26.1.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Feature
+      options:
+        - TPA
+        - Homes
+        - Warps
+        - Spawn
+        - Admin settings
+        - Update checker
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      render: text

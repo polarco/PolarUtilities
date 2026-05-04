@@ -1,128 +1,130 @@
 # PolarUtilities
 
-Plugin de utilidades para Paper 26.1.2, com comandos de teleporte, homes,
-warps, spawn, painel admin e update checker integrado.
+[![Build](https://github.com/polarco/PolarUtilities/actions/workflows/build.yml/badge.svg)](https://github.com/polarco/PolarUtilities/actions/workflows/build.yml)
+[![Latest release](https://img.shields.io/github/v/release/polarco/PolarUtilities?label=release)](https://github.com/polarco/PolarUtilities/releases/latest)
+[![Paper](https://img.shields.io/badge/Paper-26.1.2-1f8acb)](https://papermc.io/)
 
-## Recursos
+PolarUtilities is a modular utilities plugin for Paper 26.1.2. It provides
+teleport requests, homes, admin warps, spawn management, an in-game admin panel
+and a built-in update checker.
 
-- TPA: `/tpa`, `/tpahere`, `/tpaccept`, `/tpdeny`, `/tpacancel`, `/tptoggle`.
-- Homes: `/sethome`, `/home`, `/homes`, `/delhome`.
-- Warps: `/setwarp`, `/delwarp`, `/warp`, `/warps`.
-- Spawn: `/setspawn`, `/spawn`.
-- Admin: `/polarutilities`, `/polarutilities debug`, `/polarutilities updates`, `/polarutilities settings`, atalhos admin de warp/spawn e reload.
+## Features
 
-## Build
+- Clickable TPA flow with accept, deny, cancel and toggle controls.
+- Homes with command access and an inventory GUI using player heads and glass panes.
+- Admin-managed warps with clickable lists.
+- Server spawn control with `/setspawn` and `/spawn`.
+- `/polarutilities` admin hub with debug, reload, update checks and settings.
+- Official update checker preconfigured for GitHub releases.
+- YAML storage and feature folders designed for future expansion.
 
-```bash
-./gradlew build
-```
+## Installation
 
-O JAR fica em:
+1. Download the latest `PolarUtilities-*.jar` from the [Releases](https://github.com/polarco/PolarUtilities/releases/latest) page.
+2. Put the JAR in your Paper server `plugins/` folder.
+3. Restart the server.
+4. Optional: open `/polarutilities settings` in game to adjust the plugin.
 
-```text
-build/libs/PolarUtilities-0.4.1.jar
-```
+The plugin is built for Paper 26.1.2 and Java 25+.
 
-## Publicar no GitHub
+## Commands
 
-Se voce nunca publicou um projeto no GitHub, siga o guia:
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/tpa <player>` | Request to teleport to another player. | `polarutilities.tpa.use` |
+| `/tpahere <player>` | Request another player to teleport to you. | `polarutilities.tpa.use` |
+| `/tpaccept [player]` | Accept a pending teleport request. | `polarutilities.tpa.use` |
+| `/tpdeny [player]` | Deny a pending teleport request. | `polarutilities.tpa.use` |
+| `/tpacancel [player]` | Cancel outgoing teleport requests. | `polarutilities.tpa.use` |
+| `/tptoggle` | Enable or disable incoming TPA requests. | `polarutilities.tpa.use` |
+| `/sethome [name]` | Save a home at your current location. | `polarutilities.home.set` |
+| `/home [name]` | Teleport to a saved home. | `polarutilities.home.use` |
+| `/homes [gui\|list]` | Open or list saved homes. | `polarutilities.home.use` |
+| `/delhome <name>` | Delete a saved home. | `polarutilities.home.set` |
+| `/setwarp <name>` | Create or update a warp. | `polarutilities.warp.admin` |
+| `/delwarp <name>` | Delete a warp. | `polarutilities.warp.admin` |
+| `/warp <name>` | Teleport to a warp. | `polarutilities.warp.use` |
+| `/warps` | List available warps. | `polarutilities.warp.use` |
+| `/setspawn` | Set the main spawn. | `polarutilities.spawn.set` |
+| `/spawn` | Teleport to the main spawn. | `polarutilities.spawn.use` |
+| `/polarutilities` | Open the admin command hub. | `polarutilities.admin` |
 
-```text
-docs/PUBLISHING_GITHUB.md
-```
+## Admin Settings
 
-Resumo rapido:
-
-```bash
-git init
-git add .
-git commit -m "Primeira versao do PolarUtilities"
-git branch -M main
-git remote add origin https://github.com/SEU_USUARIO/PolarUtilities.git
-git push -u origin main
-```
-
-O update checker oficial ja vem apontando para este repositorio. Admins podem
-desligar pela GUI ou por comando se quiserem.
-
-## Estrutura
-
-Cada sistema fica em `src/main/java/br/com/polarutilities/feature/<nome>`.
-Novas features devem implementar `PluginFeature`, registrar seus comandos no
-`enable()` e salvar dados via `PluginStorage` quando precisarem de YAML.
-
-## Permissoes principais
-
-- `polarutilities.admin`
-- `polarutilities.tpa.use`
-- `polarutilities.home.use`
-- `polarutilities.home.set`
-- `polarutilities.home.gui`
-- `polarutilities.warp.use`
-- `polarutilities.warp.admin`
-- `polarutilities.spawn.use`
-- `polarutilities.spawn.set`
-
-## Settings
-
-Admins podem abrir a configuracao pelo jogo com:
+Admins can configure the plugin in game:
 
 ```text
 /polarutilities settings
 ```
 
-Na GUI, clique esquerdo aumenta valores numericos, clique direito diminui,
-shift altera em passos maiores e booleanos alternam ligado/desligado. Valores
-de texto tambem podem ser alterados por comando:
+Numeric options use left click to increase and right click to decrease. Holding
+shift applies larger steps. Boolean options toggle on click. Text options can be
+edited with:
 
 ```text
-/polarutilities settings set homes.gui-title Minhas homes
+/polarutilities settings set <path> <value>
+```
+
+Useful examples:
+
+```text
+/polarutilities settings set tpa.allow-self-request true
+/polarutilities settings set update-checker.enabled false
+/polarutilities updates
+/polarutilities debug
 ```
 
 ## Update Checker
 
-O plugin checa atualizacoes em segundo plano quando o servidor liga. A versao
-oficial ja vem pre-configurada para ler:
+Official builds are preconfigured to read:
 
 ```text
 https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json
 ```
 
-Para desligar, o admin pode usar a GUI `/polarutilities settings` ou o comando:
+Server owners can opt out at any time:
 
 ```text
 /polarutilities settings set update-checker.enabled false
 ```
 
-Se alguem fizer um fork, ai sim pode trocar `update-checker.url` para apontar
-para outro `update.json`.
+The update metadata lives in [`release/update.json`](release/update.json). When
+a new version is published, `latest`, `downloadUrl`, `changelogUrl` and
+`message` should be updated before tagging the release.
 
-Template pronto:
+## Build From Source
+
+```bash
+./gradlew clean build
+```
+
+The plugin JAR is generated at:
 
 ```text
-release/update.json
+build/libs/PolarUtilities-0.4.2.jar
 ```
 
-Exemplo:
-
-```json
-{
-  "latest": "0.4.1",
-  "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
-  "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
-  "message": "Resumo curto da versao mais recente.",
-  "critical": false
-}
-```
-
-Antes de distribuir uma nova versao, atualize o `latest`, os links e a mensagem
-desse arquivo publico. Servidores com versao menor recebem aviso no console e
-admins com `polarutilities.admin` tambem sao avisados ao entrar.
-
-## Release
-
-O processo recomendado esta documentado em:
+## Project Structure
 
 ```text
-docs/RELEASE_PROCESS.md
+src/main/java/br/com/polarutilities/
+|-- feature/
+|   |-- admin/
+|   |-- home/
+|   |-- spawn/
+|   |-- tpa/
+|   |-- update/
+|   `-- warp/
+|-- storage/
+|-- teleport/
+`-- util/
 ```
+
+New gameplay modules should implement `PluginFeature`, register commands in
+`enable()` and keep storage isolated behind a service class.
+
+## Maintainers
+
+- Release workflow: [docs/RELEASE_PROCESS.md](docs/RELEASE_PROCESS.md)
+- Local maintenance workflow: [docs/MAINTAINING.md](docs/MAINTAINING.md)
+- Changelog: [CHANGELOG.md](CHANGELOG.md)

@@ -1,73 +1,77 @@
-# Publicando uma nova versao
+# Release Process
 
-Use este checklist toda vez que for soltar uma versao nova do PolarUtilities.
+Use this checklist every time a public version is published.
 
-## 1. Escolher o tipo de versao
+## 1. Choose Version Impact
 
-- Correcao pequena: aumenta `patch`, exemplo `0.4.0` para `0.4.1`.
-- Feature nova: aumenta `minor`, exemplo `0.4.0` para `0.5.0`.
-- Mudanca grande ou quebra de compatibilidade: aumenta `major`, exemplo `0.4.0` para `1.0.0`.
+| Change type | Version bump | Example |
+| --- | --- | --- |
+| Bug fix or polish | Patch | `0.4.1` -> `0.4.2` |
+| New feature | Minor | `0.4.1` -> `0.5.0` |
+| Breaking or broad change | Major | `0.4.1` -> `1.0.0` |
 
-## 2. Atualizar arquivos
+Use the highest impact level when a release contains multiple change types.
 
-Atualize:
+## 2. Update Release Files
+
+Update these files before committing:
 
 - `VERSION`
 - `CHANGELOG.md`
 - `release/update.json`
-- qualquer documentacao afetada
+- Documentation affected by the change
 
-No `release/update.json`, mantenha este formato:
+`release/update.json` must stay valid JSON:
 
 ```json
 {
-  "latest": "0.5.0",
+  "latest": "0.4.2",
   "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
   "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
-  "message": "Resumo curto e claro da nova versao.",
+  "message": "Short release summary.",
   "critical": false
 }
 ```
 
-Use `"critical": true` so quando a atualizacao for muito importante.
+Use `"critical": true` only for urgent updates.
 
-O plugin oficial ja vem com `update-checker.url` apontando para o arquivo raw
-do GitHub. Admins fazem opt-out desligando `update-checker.enabled`, nao
-apagando a URL.
-
-## 3. Testar localmente
+## 3. Test Locally
 
 ```bash
 ./gradlew clean build
 ./gradlew --warning-mode all build
 ```
 
-O JAR fica em:
+The final JAR is generated in:
 
 ```text
-build/libs/PolarUtilities-VERSAO.jar
+build/libs/
 ```
 
-## 4. Enviar para o GitHub
-
-Troque `0.5.0` pela versao real:
+## 4. Commit And Push
 
 ```bash
+git status
 git add .
-git commit -m "Release 0.5.0"
+git commit -m "Release 0.4.2"
 git push origin main
-git tag v0.5.0
-git push origin v0.5.0
 ```
 
-Quando a tag for enviada, o workflow `.github/workflows/release.yml` cria a
-Release automaticamente e anexa o JAR.
+## 5. Create The Release
 
-## 5. Conferir
+```bash
+git tag v0.4.2
+git push origin v0.4.2
+```
 
-No GitHub:
+GitHub Actions will build the plugin and create the release automatically.
 
-1. Abra a aba `Actions` e confirme se o build passou.
-2. Abra a aba `Releases` e confirme se apareceu a nova versao.
-3. Confira se o JAR esta anexado.
-4. Abra o `release/update.json` pelo link raw e confirme se `latest` esta certo.
+## 6. Verify
+
+Confirm:
+
+- The `Build` workflow passed.
+- The `Release` workflow passed.
+- The GitHub Release exists.
+- The release contains `PolarUtilities-<version>.jar`.
+- The raw `release/update.json` shows the new `latest` value.
