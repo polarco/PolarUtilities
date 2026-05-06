@@ -5,8 +5,8 @@
 [![Paper](https://img.shields.io/badge/Paper-26.1.2-1f8acb)](https://papermc.io/)
 
 PolarUtilities is a modular utilities plugin for Paper 26.1.2. It provides
-teleport requests, homes, admin warps, spawn management, an in-game admin panel
-and a built-in update checker.
+teleport requests, homes, admin warps, spawn management, individual player
+difficulty, an in-game admin panel and a built-in update checker.
 
 ## Features
 
@@ -14,6 +14,7 @@ and a built-in update checker.
 - Homes with command access and an inventory GUI using player heads and glass panes.
 - Admin-managed warps with clickable lists.
 - Server spawn control with `/setspawn` and `/spawn`.
+- Per-player difficulty GUI with EASY, NORMAL, HARD and individual Keep Inventory.
 - `/polarutilities` admin hub with debug, reload, update checks and settings.
 - Official update checker preconfigured for GitHub releases.
 - YAML storage and feature folders designed for future expansion.
@@ -47,6 +48,8 @@ The plugin is built for Paper 26.1.2 and Java 25+.
 | `/warps` | List available warps. | `polarutilities.warp.use` |
 | `/setspawn` | Set the main spawn. | `polarutilities.spawn.set` |
 | `/spawn` | Teleport to the main spawn. | `polarutilities.spawn.use` |
+| `/dificuldade [status]` | Open the personal difficulty GUI or show your current status. | `polarutilities.difficulty.use` |
+| `/dificuldade admin <enable\|disable\|reload>` | Toggle or reload the difficulty module at runtime. | `polarutilities.difficulty.admin` |
 | `/polarutilities` | Open the admin command hub. | `polarutilities.admin` |
 
 ## Admin Settings
@@ -69,6 +72,7 @@ Useful examples:
 
 ```text
 /polarutilities settings set tpa.allow-self-request true
+/polarutilities settings set module.enabled false
 /polarutilities settings set update-checker.enabled false
 /polarutilities updates
 /polarutilities debug
@@ -101,7 +105,7 @@ a new version is published, `latest`, `downloadUrl`, `changelogUrl` and
 The plugin JAR is generated at:
 
 ```text
-build/libs/PolarUtilities-0.4.3.jar
+build/libs/PolarUtilities-0.5.0.jar
 ```
 
 ## Project Structure
@@ -110,6 +114,7 @@ build/libs/PolarUtilities-0.4.3.jar
 src/main/java/br/com/polarutilities/
 |-- feature/
 |   |-- admin/
+|   |-- difficulty/
 |   |-- home/
 |   |-- spawn/
 |   |-- tpa/

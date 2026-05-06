@@ -71,6 +71,7 @@ public final class AdminFeature implements PluginFeature, Listener {
             SettingOption.text("homes.gui-title", Material.OAK_SIGN, "Titulo da GUI de homes", "Texto exibido no menu de homes.", "Suas homes"),
             SettingOption.text("warps.list-title", Material.COMPASS, "Titulo da lista de warps", "Texto exibido antes da lista de warps.", "Warps disponiveis"),
             SettingOption.bool("spawn.fallback-to-world-spawn", "Spawn fallback", "Usa o spawn do mundo se /setspawn ainda nao foi usado.", true),
+            SettingOption.bool("module.enabled", "Modulo dificuldade", "Liga ou desliga a dificuldade individual.", true),
             SettingOption.bool("update-checker.enabled", "Update checker", "Checa se existe versao nova ao ligar o servidor.", true),
             SettingOption.text("update-checker.url", Material.MAP, "URL de updates", "Endereco publico do update.json.", DEFAULT_UPDATE_URL),
             SettingOption.bool("update-checker.notify-console", "Avisar console", "Mostra updates no console do servidor.", true),
@@ -380,7 +381,8 @@ public final class AdminFeature implements PluginFeature, Listener {
             + ", tpaSelf=" + plugin.getConfig().getBoolean("tpa.allow-self-request", false)
             + ", tpaTimeout=" + plugin.getConfig().getInt("tpa.request-timeout-seconds", 60)
             + "s, homesLimit=" + plugin.getConfig().getInt("homes.default-limit", 5)
-            + ", spawnFallback=" + plugin.getConfig().getBoolean("spawn.fallback-to-world-spawn", true));
+            + ", spawnFallback=" + plugin.getConfig().getBoolean("spawn.fallback-to-world-spawn", true)
+            + ", difficultyModule=" + plugin.getConfig().getBoolean("module.enabled", true));
         Texts.info(sender, "Updates: " + updateCheckerFeature.statusText());
     }
 

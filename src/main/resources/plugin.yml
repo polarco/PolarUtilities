@@ -77,6 +77,11 @@ commands:
     description: Teleporta para o spawn.
     usage: /spawn
     permission: polarutilities.spawn.use
+  dificuldade:
+    description: Abre a GUI de dificuldade individual.
+    usage: /dificuldade [status|admin <enable|disable|reload>]
+    aliases: [difficulty, dif]
+    permission: polarutilities.difficulty.use
 
 permissions:
   polarutilities.admin:
@@ -86,6 +91,8 @@ permissions:
       polarutilities.warp.admin: true
       polarutilities.spawn.set: true
       polarutilities.home.bypass-limit: true
+      polarutilities.difficulty.admin: true
+      polarutilities.difficulty.use: true
   polarutilities.tpa.use:
     description: Permite usar comandos de TPA.
     default: true
@@ -113,3 +120,11 @@ permissions:
   polarutilities.spawn.set:
     description: Permite usar /setspawn.
     default: op
+  polarutilities.difficulty.use:
+    description: Permite usar a GUI de dificuldade individual.
+    default: true
+  polarutilities.difficulty.admin:
+    description: Permite ativar, desativar e recarregar o modulo de dificuldade.
+    default: op
+    children:
+      polarutilities.difficulty.use: true

@@ -1,5 +1,6 @@
 .gradle/
 build/
+docs/
 dist/
 run/
 *.log
@@ -7,3 +8,4 @@ run/
 players.yml
 warps.yml
 spawn.yml
+GPTContext.md

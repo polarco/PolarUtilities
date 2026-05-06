@@ -1,7 +1,7 @@
 {
-  "latest": "0.4.3",
+  "latest": "0.5.0",
   "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
   "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
-  "message": "Workflows do GitHub Actions atualizados para actions modernas sem aviso de Node 20.",
+  "message": "Sistema de dificuldade individual com GUI, Keep Inventory por jogador e penalidade progressiva de XP.",
   "critical": false
 }

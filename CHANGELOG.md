@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 - 2026-05-06
+
+- Adicionado sistema de dificuldade individual por jogador com GUI em `/dificuldade`.
+- Adicionadas opcoes EASY, NORMAL e HARD com multiplicadores individuais de dano recebido e XP recebido.
+- Adicionado Keep Inventory individual com penalidade progressiva de XP por mortes recentes.
+- Adicionados comandos admin `/dificuldade admin enable`, `/dificuldade admin disable` e `/dificuldade admin reload`.
+- Adicionada configuracao `module.enabled` para desligar totalmente o modulo em runtime.
+
 ## 0.4.3 - 2026-05-04
 
 - Atualizados workflows do GitHub Actions para versoes modernas das actions oficiais.

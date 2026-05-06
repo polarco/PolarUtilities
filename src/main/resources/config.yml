@@ -16,6 +16,28 @@ warps:
 spawn:
   fallback-to-world-spawn: true
 
+module:
+  enabled: true
+
+difficulty:
+  default-mode: NORMAL
+  default-keep-inventory: false
+  damage-multipliers:
+    easy: 0.80
+    normal: 1.00
+    hard: 1.35
+  xp-multipliers:
+    easy: 0.80
+    normal: 1.00
+    hard: 1.50
+
+keepInventoryXpPenalty:
+  baseXpLossPercent: 10
+  extraLossPerRecentDeathPercent: 7
+  maxXpLossPercent: 50
+  stackWindowMinutes: 20
+  minimumXpLoss: 5
+
 update-checker:
   enabled: true
   url: "https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json"
