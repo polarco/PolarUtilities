@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0 - 2026-05-06
+
+- Adicionado `/menu` como GUI central do jogador com atalhos para homes, warps, spawn, TPA, dificuldade, status e opcoes admin quando permitido.
+- Adicionada permissao `polarutilities.menu.use` e aliases `/polar` e `/pmenu`.
+- Adicionada configuracao `menu.gui-title` para personalizar o titulo do menu central.
+
 ## 0.6.0 - 2026-05-06
 
 - Adicionado auto-updater oficial no boot: quando houver versao nova, o JAR e baixado para a pasta de updates do Paper e aplicado no proximo restart.

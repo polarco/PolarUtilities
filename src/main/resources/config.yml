@@ -6,6 +6,9 @@ tpa:
   request-timeout-seconds: 60
   allow-self-request: false
 
+menu:
+  gui-title: "Menu PolarUtilities"
+
 homes:
   default-limit: 5
   gui-title: "Suas homes"

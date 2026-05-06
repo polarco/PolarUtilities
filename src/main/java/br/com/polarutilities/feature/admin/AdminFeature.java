@@ -66,6 +66,7 @@ public final class AdminFeature implements PluginFeature, Listener {
             SettingOption.bool("teleport.cancel-on-move", "Cancelar ao mover", "Cancela teleportes pendentes quando o player se move.", true),
             SettingOption.integer("tpa.request-timeout-seconds", Material.ENDER_PEARL, "Timeout do TPA", "Tempo para aceitar ou negar um pedido.", 60, 5, 600, 5, 30),
             SettingOption.bool("tpa.allow-self-request", "TPA para si proprio", "Permite usar TPA em si mesmo para testar sozinho.", false),
+            SettingOption.text("menu.gui-title", Material.CHEST, "Titulo do menu", "Texto exibido no /menu.", "Menu PolarUtilities"),
             SettingOption.integer("homes.default-limit", Material.PLAYER_HEAD, "Limite padrao de homes", "Quantidade de homes para players sem permissao extra.", 5, 1, 100, 1, 10),
             SettingOption.text("homes.gui-title", Material.OAK_SIGN, "Titulo da GUI de homes", "Texto exibido no menu de homes.", "Suas homes"),
             SettingOption.text("warps.list-title", Material.COMPASS, "Titulo da lista de warps", "Texto exibido antes da lista de warps.", "Warps disponiveis"),

@@ -6,7 +6,8 @@
 
 PolarUtilities is a modular utilities plugin for Paper 26.1.2. It provides
 teleport requests, homes, admin warps, spawn management, individual player
-difficulty, an in-game admin panel and a built-in official auto-updater.
+difficulty, a central player menu, an in-game admin panel and a built-in
+official auto-updater.
 
 ## Features
 
@@ -15,6 +16,7 @@ difficulty, an in-game admin panel and a built-in official auto-updater.
 - Admin-managed warps with clickable lists.
 - Server spawn control with `/setspawn` and `/spawn`.
 - Per-player difficulty GUI with EASY, NORMAL, HARD and individual Keep Inventory.
+- Central `/menu` GUI with shortcuts to the main player utilities.
 - `/polarutilities` admin hub with debug, reload, update checks and settings.
 - Official auto-updater locked to PolarUtilities GitHub releases.
 - YAML storage and feature folders designed for future expansion.
@@ -32,6 +34,7 @@ The plugin is built for Paper 26.1.2 and Java 25+.
 
 | Command | Description | Permission |
 | --- | --- | --- |
+| `/menu` | Open the central player menu. | `polarutilities.menu.use` |
 | `/tpa <player>` | Request to teleport to another player. | `polarutilities.tpa.use` |
 | `/tpahere <player>` | Request another player to teleport to you. | `polarutilities.tpa.use` |
 | `/tpaccept [player]` | Accept a pending teleport request. | `polarutilities.tpa.use` |
@@ -72,6 +75,7 @@ Useful examples:
 
 ```text
 /polarutilities settings set tpa.allow-self-request true
+/polarutilities settings set menu.gui-title Menu do Servidor
 /polarutilities settings set module.enabled false
 /polarutilities settings set update-checker.auto-download false
 /polarutilities settings set update-checker.enabled false
@@ -120,7 +124,7 @@ https://github.com/polarco/PolarUtilities/releases/download/vX.Y.Z/PolarUtilitie
 The plugin JAR is generated at:
 
 ```text
-build/libs/PolarUtilities-0.6.0.jar
+build/libs/PolarUtilities-0.7.0.jar
 ```
 
 ## Project Structure
@@ -131,6 +135,7 @@ src/main/java/br/com/polarutilities/
 |   |-- admin/
 |   |-- difficulty/
 |   |-- home/
+|   |-- menu/
 |   |-- spawn/
 |   |-- tpa/
 |   |-- update/

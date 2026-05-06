@@ -4,6 +4,7 @@ import br.com.polarutilities.feature.PluginFeature;
 import br.com.polarutilities.feature.admin.AdminFeature;
 import br.com.polarutilities.feature.difficulty.DifficultyFeature;
 import br.com.polarutilities.feature.home.HomeFeature;
+import br.com.polarutilities.feature.menu.MenuFeature;
 import br.com.polarutilities.feature.spawn.SpawnFeature;
 import br.com.polarutilities.feature.tpa.TpaFeature;
 import br.com.polarutilities.feature.update.UpdateCheckerFeature;
@@ -37,6 +38,7 @@ public final class PolarUtilitiesPlugin extends JavaPlugin {
 
         features.add(new AdminFeature(this, registrar, storage, updateCheckerFeature));
         features.add(updateCheckerFeature);
+        features.add(new MenuFeature(this, registrar, storage));
         features.add(new DifficultyFeature(this, registrar, storage));
         features.add(new TpaFeature(this, registrar, storage, teleportService));
         features.add(new HomeFeature(this, registrar, storage, teleportService));

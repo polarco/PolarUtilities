@@ -11,6 +11,11 @@ commands:
     usage: /polarutilities <help|version|reload|debug|updates|settings>
     aliases: [putils]
     permission: polarutilities.admin
+  menu:
+    description: Abre o menu central do jogador.
+    usage: /menu
+    aliases: [polar, pmenu]
+    permission: polarutilities.menu.use
   tpa:
     description: Solicita teleporte ate outro jogador.
     usage: /tpa <jogador>
@@ -93,6 +98,10 @@ permissions:
       polarutilities.home.bypass-limit: true
       polarutilities.difficulty.admin: true
       polarutilities.difficulty.use: true
+      polarutilities.menu.use: true
+  polarutilities.menu.use:
+    description: Permite abrir o menu central do jogador.
+    default: true
   polarutilities.tpa.use:
     description: Permite usar comandos de TPA.
     default: true
