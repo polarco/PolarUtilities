@@ -6,7 +6,7 @@
 
 PolarUtilities is a modular utilities plugin for Paper 26.1.2. It provides
 teleport requests, homes, admin warps, spawn management, individual player
-difficulty, an in-game admin panel and a built-in update checker.
+difficulty, an in-game admin panel and a built-in official auto-updater.
 
 ## Features
 
@@ -16,7 +16,7 @@ difficulty, an in-game admin panel and a built-in update checker.
 - Server spawn control with `/setspawn` and `/spawn`.
 - Per-player difficulty GUI with EASY, NORMAL, HARD and individual Keep Inventory.
 - `/polarutilities` admin hub with debug, reload, update checks and settings.
-- Official update checker preconfigured for GitHub releases.
+- Official auto-updater locked to PolarUtilities GitHub releases.
 - YAML storage and feature folders designed for future expansion.
 
 ## Installation
@@ -73,12 +73,13 @@ Useful examples:
 ```text
 /polarutilities settings set tpa.allow-self-request true
 /polarutilities settings set module.enabled false
+/polarutilities settings set update-checker.auto-download false
 /polarutilities settings set update-checker.enabled false
 /polarutilities updates
 /polarutilities debug
 ```
 
-## Update Checker
+## Auto Updater
 
 Official builds are preconfigured to read:
 
@@ -92,9 +93,23 @@ Server owners can opt out at any time:
 /polarutilities settings set update-checker.enabled false
 ```
 
+Automatic downloads can be disabled while keeping manual update checks:
+
+```text
+/polarutilities settings set update-checker.auto-download false
+```
+
+The metadata URL and download URL are locked in the plugin code for official
+builds. They are not exposed in the admin GUI or settings command.
+
 The update metadata lives in [`release/update.json`](release/update.json). When
 a new version is published, `latest`, `downloadUrl`, `changelogUrl` and
-`message` should be updated before tagging the release.
+`message` should be updated before tagging the release. The auto-updater uses
+the official release artifact pattern:
+
+```text
+https://github.com/polarco/PolarUtilities/releases/download/vX.Y.Z/PolarUtilities-X.Y.Z.jar
+```
 
 ## Build From Source
 
@@ -105,7 +120,7 @@ a new version is published, `latest`, `downloadUrl`, `changelogUrl` and
 The plugin JAR is generated at:
 
 ```text
-build/libs/PolarUtilities-0.5.0.jar
+build/libs/PolarUtilities-0.6.0.jar
 ```
 
 ## Project Structure

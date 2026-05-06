@@ -2,10 +2,14 @@ package br.com.polarutilities.feature.update;
 
 import br.com.polarutilities.feature.PluginFeature;
 import br.com.polarutilities.util.Texts;
+import java.io.File;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
@@ -23,9 +27,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class UpdateCheckerFeature implements PluginFeature, Listener {
+    private static final String OFFICIAL_METADATA_URL = "https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json";
+    private static final String OFFICIAL_DOWNLOAD_URL = "https://github.com/polarco/PolarUtilities/releases/download/v%s/PolarUtilities-%s.jar";
+
     private final JavaPlugin plugin;
     private final AtomicBoolean checkInProgress = new AtomicBoolean(false);
+    private final AtomicBoolean downloadInProgress = new AtomicBoolean(false);
     private UpdateCheckResult lastResult;
+    private UpdateDownloadResult lastDownloadResult;
     private String lastError;
 
     public UpdateCheckerFeature(JavaPlugin plugin) {
@@ -70,16 +79,6 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
             return;
         }
 
-        String url = plugin.getConfig().getString("update-checker.url", "");
-        if (url == null || url.isBlank()) {
-            lastError = "URL do update checker nao configurada.";
-            if (requester != null) {
-                Texts.error(requester, lastError);
-                Texts.info(requester, "Configure com /polarutilities settings set update-checker.url <url>.");
-            }
-            return;
-        }
-
         if (!checkInProgress.compareAndSet(false, true)) {
             if (requester != null) {
                 Texts.warning(requester, "Ja existe uma checagem de update em andamento.");
@@ -88,21 +87,15 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
         }
 
         if (requester != null) {
-            Texts.info(requester, "Checando atualizacoes...");
+            Texts.info(requester, "Checando atualizacoes oficiais...");
         }
 
         int timeoutSeconds = Math.max(2, plugin.getConfig().getInt("update-checker.timeout-seconds", 6));
         HttpClient client;
         HttpRequest request;
         try {
-            URI uri = URI.create(url);
-            if (!"http".equalsIgnoreCase(uri.getScheme()) && !"https".equalsIgnoreCase(uri.getScheme())) {
-                throw new IllegalArgumentException("Use uma URL http ou https.");
-            }
-            client = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(timeoutSeconds))
-                .build();
-            request = HttpRequest.newBuilder(uri)
+            client = httpClient(timeoutSeconds);
+            request = HttpRequest.newBuilder(URI.create(OFFICIAL_METADATA_URL))
                 .timeout(Duration.ofSeconds(timeoutSeconds))
                 .header("Accept", "application/json, application/x-yaml, text/yaml, text/plain")
                 .header("User-Agent", "PolarUtilities/" + plugin.getPluginMeta().getVersion())
@@ -135,6 +128,12 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
         if (checkInProgress.get()) {
             return "checagem em andamento";
         }
+        if (downloadInProgress.get()) {
+            return "download de update em andamento";
+        }
+        if (lastDownloadResult != null) {
+            return "update baixado: " + lastDownloadResult.version() + " em " + lastDownloadResult.fileName();
+        }
         if (lastResult != null) {
             return lastResult.updateAvailable()
                 ? "update disponivel: " + lastResult.currentVersion() + " -> " + lastResult.metadata().latest()
@@ -144,6 +143,13 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
             return "erro: " + lastError;
         }
         return "ainda nao checado";
+    }
+
+    private HttpClient httpClient(int timeoutSeconds) {
+        return HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.NORMAL)
+            .connectTimeout(Duration.ofSeconds(timeoutSeconds))
+            .build();
     }
 
     private UpdateCheckResult fetch(HttpClient client, HttpRequest request) {
@@ -191,6 +197,9 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
             if (requester != null && requester != plugin.getServer().getConsoleSender()) {
                 sendUpdateNotice(requester, result);
             }
+            if (plugin.getConfig().getBoolean("update-checker.auto-download", true)) {
+                downloadUpdate(requester, result);
+            }
             return;
         }
 
@@ -215,6 +224,100 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
         }
     }
 
+    private void downloadUpdate(CommandSender requester, UpdateCheckResult result) {
+        if (!downloadInProgress.compareAndSet(false, true)) {
+            if (requester != null) {
+                Texts.warning(requester, "Ja existe um download de update em andamento.");
+            }
+            return;
+        }
+
+        String latest = result.metadata().latest();
+        int timeoutSeconds = Math.max(30, plugin.getConfig().getInt("update-checker.timeout-seconds", 6) * 5);
+        HttpClient client = httpClient(timeoutSeconds);
+        File updateFolder = plugin.getServer().getUpdateFolderFile();
+        HttpRequest request = HttpRequest.newBuilder(URI.create(officialDownloadUrl(latest)))
+            .timeout(Duration.ofSeconds(timeoutSeconds))
+            .header("Accept", "application/java-archive, application/octet-stream, */*")
+            .header("User-Agent", "PolarUtilities/" + plugin.getPluginMeta().getVersion())
+            .GET()
+            .build();
+
+        if (requester != null) {
+            Texts.info(requester, "Baixando update oficial " + latest + " para aplicar no proximo restart...");
+        } else if (plugin.getConfig().getBoolean("update-checker.notify-console", true)) {
+            plugin.getLogger().info("Baixando update oficial " + latest + " para aplicar no proximo restart.");
+        }
+
+        CompletableFuture
+            .supplyAsync(() -> download(client, request, latest, updateFolder))
+            .whenComplete((downloadResult, throwable) -> plugin.getServer().getScheduler().runTask(plugin, () -> {
+                downloadInProgress.set(false);
+                if (throwable != null) {
+                    handleDownloadFailure(requester, throwable);
+                    return;
+                }
+                handleDownloadSuccess(requester, downloadResult);
+            }));
+    }
+
+    private UpdateDownloadResult download(HttpClient client, HttpRequest request, String latestVersion, File updateFolder) {
+        try {
+            HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+            if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                throw new IllegalStateException("HTTP " + response.statusCode());
+            }
+
+            byte[] body = response.body();
+            if (body.length < 1024) {
+                throw new IllegalStateException("Arquivo baixado parece invalido ou vazio.");
+            }
+            if (body[0] != 'P' || body[1] != 'K') {
+                throw new IllegalStateException("Arquivo baixado nao parece ser um JAR valido.");
+            }
+
+            if (!updateFolder.exists() && !updateFolder.mkdirs()) {
+                throw new IllegalStateException("Nao foi possivel criar a pasta de update: " + updateFolder.getAbsolutePath());
+            }
+
+            String fileName = "PolarUtilities-" + safeVersion(latestVersion) + ".jar";
+            Path target = updateFolder.toPath().resolve(fileName);
+            Path temporary = updateFolder.toPath().resolve(fileName + ".tmp");
+            Files.write(temporary, body);
+            Files.move(temporary, target, StandardCopyOption.REPLACE_EXISTING);
+            return new UpdateDownloadResult(latestVersion, target.toFile().getName(), target.toAbsolutePath().toString(), Instant.now());
+        } catch (Exception exception) {
+            throw new IllegalStateException(exception.getMessage(), exception);
+        }
+    }
+
+    private void handleDownloadSuccess(CommandSender requester, UpdateDownloadResult result) {
+        lastDownloadResult = result;
+        lastError = null;
+        String message = "Update " + result.version() + " baixado em " + result.fileName() + ". Reinicie o servidor para aplicar.";
+
+        if (requester != null) {
+            Texts.success(requester, message);
+        }
+        if (requester == null || requester != plugin.getServer().getConsoleSender()) {
+            plugin.getLogger().info(message);
+        }
+    }
+
+    private void handleDownloadFailure(CommandSender requester, Throwable throwable) {
+        Throwable cause = throwable.getCause() == null ? throwable : throwable.getCause();
+        lastError = "download falhou: " + cause.getMessage();
+
+        if (requester != null) {
+            Texts.error(requester, "Nao foi possivel baixar o update: " + cause.getMessage());
+            return;
+        }
+
+        if (plugin.getConfig().getBoolean("update-checker.notify-console", true)) {
+            plugin.getLogger().log(Level.WARNING, "Nao foi possivel baixar o update: " + cause.getMessage());
+        }
+    }
+
     private void sendUpdateNotice(CommandSender sender, UpdateCheckResult result) {
         UpdateMetadata metadata = result.metadata();
         NamedTextColor color = metadata.critical() ? NamedTextColor.RED : NamedTextColor.GOLD;
@@ -229,11 +332,12 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
         }
 
         Component links = Component.empty();
-        boolean hasDownload = metadata.downloadUrl() != null && !metadata.downloadUrl().isBlank();
+        String downloadUrl = officialDownloadUrl(metadata.latest());
+        boolean hasDownload = !downloadUrl.isBlank();
         boolean hasChangelog = metadata.changelogUrl() != null && !metadata.changelogUrl().isBlank();
 
         if (hasDownload) {
-            links = links.append(Texts.urlButton("Baixar", metadata.downloadUrl(), NamedTextColor.GREEN, "Abrir pagina de download"));
+            links = links.append(Texts.urlButton("Baixar JAR", downloadUrl, NamedTextColor.GREEN, "Abrir download oficial"));
         }
         if (hasDownload && hasChangelog) {
             links = links.append(Texts.separator());
@@ -244,5 +348,16 @@ public final class UpdateCheckerFeature implements PluginFeature, Listener {
         if (hasDownload || hasChangelog) {
             Texts.send(sender, links);
         }
+    }
+
+    private String officialDownloadUrl(String version) {
+        return OFFICIAL_DOWNLOAD_URL.formatted(version, version);
+    }
+
+    private String safeVersion(String version) {
+        return version == null ? "unknown" : version.replaceAll("[^A-Za-z0-9._-]", "_");
+    }
+
+    private record UpdateDownloadResult(String version, String fileName, String absolutePath, Instant downloadedAt) {
     }
 }

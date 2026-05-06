@@ -40,7 +40,7 @@ keepInventoryXpPenalty:
 
 update-checker:
   enabled: true
-  url: "https://raw.githubusercontent.com/polarco/PolarUtilities/main/release/update.json"
+  auto-download: true
   notify-console: true
   notify-admins-on-join: true
   startup-delay-seconds: 5

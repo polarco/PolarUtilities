@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 - 2026-05-06
+
+- Adicionado auto-updater oficial no boot: quando houver versao nova, o JAR e baixado para a pasta de updates do Paper e aplicado no proximo restart.
+- Removida a URL editavel do update checker da config e da GUI admin.
+- Travado o update checker para usar somente a metadata oficial do repositorio `polarco/PolarUtilities`.
+- Adicionada opcao `update-checker.auto-download` para ligar ou desligar apenas o download automatico, sem alterar endpoints oficiais.
+
 ## 0.5.0 - 2026-05-06
 
 - Adicionado sistema de dificuldade individual por jogador com GUI em `/dificuldade`.

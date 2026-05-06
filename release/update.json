@@ -1,7 +1,7 @@
 {
-  "latest": "0.5.0",
-  "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/latest",
+  "latest": "0.6.0",
+  "downloadUrl": "https://github.com/polarco/PolarUtilities/releases/download/v0.6.0/PolarUtilities-0.6.0.jar",
   "changelogUrl": "https://github.com/polarco/PolarUtilities/blob/main/CHANGELOG.md",
-  "message": "Sistema de dificuldade individual com GUI, Keep Inventory por jogador e penalidade progressiva de XP.",
+  "message": "Auto-updater oficial no boot com download travado para os releases do PolarUtilities.",
   "critical": false
 }
